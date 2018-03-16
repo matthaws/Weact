@@ -1,15 +1,15 @@
 import { TEXT_ELEMENT } from "./weact-util";
 
-const createElement = (type, initialProps, ...args) => {
+export const createElement = (type, initialProps, ...args) => {
   const props = Object.assign({}, initialProps);
   const hasChildren = args.length > 0;
   const allChildren = hasChildren ? [].concat(...args) : [];
   props.children = allChildren
-    .filter(c => c != null && c !== false)
-    .map(c => c instanceof Object ? c : createTextElement(c));
+    .filter(child => child != null && child !== false)
+    .map(child => child instanceof Object ? child : createTextElement(child));
   return { type, props };
 };
 
-const createTextElement = value => {
+export const createTextElement = value => {
   return createElement(TEXT_ELEMENT, { nodeValue: value })
 }
