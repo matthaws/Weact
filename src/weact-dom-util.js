@@ -30,7 +30,7 @@ const reconcile = (parentDomElement, instance, element) => {
     const newInstance = instantiate(element);
     parentDomElement.replaceChild(newInstance.dom, instance.dom);
     return newInstance;
-  } else if (typeof element.type === "string") {
+  } else if (isDomElement(element.type)) {
     updateDomProperties(instance.dom, instance.element.props, element.props);
     instance.childInstances = reconcileChildren(instance, element);
     instance.element = element;
@@ -56,7 +56,6 @@ const instantiate = element => {
 };
 
 const instantiateClassElement = element => {
-  console.log(element.type);
   const publicInstance = createPublicInstance(element, instance);
   const childElement = publicInstance.render();
   const childInstance = instantiate(childElement);
@@ -132,7 +131,6 @@ const updateDomProperties = (dom, prevProps, nextProps) => {
 
 const createPublicInstance = (element, internalInstance) => {
   const { type, props } = element;
-  console.log(type)
   const publicInstance = new type(props);
   publicInstance.internalInstance = internalInstance;
   return publicInstance;
