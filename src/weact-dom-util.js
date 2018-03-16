@@ -24,6 +24,7 @@ const reconcile = (parentDomElement, instance, element) => {
     return newInstance;
   } else if (instance.element.type === element.type) {
     updateDomProperties(instance.dom, instance.element.props, element.props);
+    instance.childInstances = reconcileChildren(instance, element);
     instance.element = element;
     return instance;
   } else {
@@ -55,14 +56,39 @@ const createChildInstanceObject = childArray => {
   const multipleChildren = childArray.length < 2 ? false : true;
   const childInstances = {};
   childArray.map(instantiate).forEach((child, idx) => {
-    if (child.element.props.key) {
+    if (child.element && child.element.props.key) {
       childInstances[child.element.props.key] = child;
+    } else if (child.props && child.props.key) {
+      childInstances[child.props.key] = child;
     } else {
       childInstances[idx] = child;
     }
   });
   return childInstances;
 };
+
+const reconcileChildren = (instance, element) => {
+  const domElement = instance.dom;
+  const childInstances = instance.childInstances;
+  const nextChildElements =
+    createChildInstanceObject(element.props.children) || {};
+  const newChildInstance = {};
+  const keys = Object.keys(childInstances);
+  Object.keys(nextChildElements).forEach( key => {
+    if (!childInstances[key]) {
+      keys.push(key)
+    }
+  });
+  keys.forEach( key => {
+    const childInstance = childInstances[key];
+    const childElement = nextChildElements[key];
+    const newChildInstance = reconcile(domElement, childInstance, childElement);
+    newChildInstance[key] = newChildInstance;
+  })
+
+  return newChildInstances;
+};
+
 
 const updateDomProperties = (dom, prevProps, nextProps) => {
   removeEventListeners(dom, prevProps);
