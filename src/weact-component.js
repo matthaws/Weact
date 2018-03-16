@@ -1,5 +1,3 @@
-
-
 export class Component {
   constructor(props) {
     this.props = props;
@@ -7,14 +5,12 @@ export class Component {
   }
 
   setState(newStateStuff) {
-    this.state = Object.assign({}, this.state, newStateStuff);
-    updateInstance(this.internalInstance)
+    scheduleUpdate(this, newStateStuff);
   }
 }
 
-export const updateInstance = (internalInstance) => {
-  const parentDomElement = internalInstance.dom.parentNode;
-  const element = internalInstnace.element;
-  reconcile(parentDom, internalInstance, element);
-
+export const createInstance = (fiber) => {
+  const instance = new fiber.type(fiber.props);
+  instance.fiber = fiber;
+  return instance;
 }
