@@ -1,3 +1,5 @@
+import { scheduleUpdate } from "../weact-fiber/weact-fiber";
+
 export class Component {
   constructor(props) {
     this.props = props;
@@ -7,10 +9,4 @@ export class Component {
   setState(newStateStuff) {
     scheduleUpdate(this, newStateStuff);
   }
-}
-
-export const createInstance = (fiber) => {
-  const instance = new fiber.type(fiber.props);
-  instance.fiber = fiber;
-  return instance;
 }

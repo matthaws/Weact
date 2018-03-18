@@ -5,26 +5,25 @@ import {
   isDomElement,
   isNew,
   isGone
-} from "./weact-util";
-import WeactDOM from "./weact-dom";
+} from "../weact/weact-util";
 
 export const updateDomProperties = (dom, prevProps, nextProps) => {
-  removeEventListeners(dom, prevProps);
-  removeAttributes(dom, prevProps);
+  removeEventListeners(dom, prevProps, nextProps);
+  removeAttributes(dom, prevProps, nextProps);
   updateStyle(dom, prevProps, nextProps);
-  addAttributes(dom, nextProps);
-  addEventListeners(dom, nextProps);
+  addAttributes(dom, prevProps, nextProps);
+  addEventListeners(dom, prevProps, nextProps);
 };
 
 export const createDomElement = fiber => {
-  const dom = isTextElement
+  const dom = isTextElement(fiber.type)
     ? document.createTextNode("")
     : document.createElement(fiber.type);
   updateDomProperties(dom, {}, fiber.props);
   return dom;
 };
 
-export const removeEventListeners = (domElement, prevProps, nextProps) => {
+const removeEventListeners = (domElement, prevProps, nextProps) => {
   Object.keys(prevProps)
     .filter(isEvent)
     .filter(key => {
@@ -36,8 +35,8 @@ export const removeEventListeners = (domElement, prevProps, nextProps) => {
     });
 };
 
-export const removeAttributes = (domElement, props) => {
-  Object.keys(props)
+const removeAttributes = (domElement, prevProps, nextProps) => {
+  Object.keys(prevProps)
     .filter(isAttribute)
     .filter(key => isGone(prevProps, nextProps, key))
     .forEach(prop => {
@@ -45,22 +44,22 @@ export const removeAttributes = (domElement, props) => {
     });
 };
 
-export const addAttributes = (domElement, props) => {
-  Object.keys(props)
+const addAttributes = (domElement, prevProps, nextProps) => {
+  Object.keys(nextProps)
     .filter(isAttribute)
     .filter(key => isNew(prevProps, nextProps, key))
     .forEach(name => {
-      domElement[name] = props[name];
+      domElement[name] = nextProps[name];
     });
 };
 
-export const addEventListeners = (domElement, props) => {
-  Object.keys(props)
+const addEventListeners = (domElement, prevProps, nextProps) => {
+  Object.keys(nextProps)
     .filter(isEvent)
     .filter(key => isNew(prevProps, nextProps, key))
     .forEach(name => {
       const eventType = name.toLowerCase().substring(2);
-      domElement.addEventListener(eventType, props[name]);
+      domElement.addEventListener(eventType, nextProps[name]);
     });
 };
 
