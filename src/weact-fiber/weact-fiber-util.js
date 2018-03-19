@@ -19,10 +19,11 @@ export const getRoot = fiber => {
   return node;
 };
 
-// TODO: Call lifecycle methods!
 export const updateClassComponent = fiber => {
+  let newInstance = false;
   let instance = fiber.stateNode;
   if (!instance) {
+    newInstance = true;
     fiber.stateNode = createInstance(fiber);
     instance = fiber.stateNode;
   } else if (fiber.props == instance.props && !fiber.newStateStuff) {
@@ -31,12 +32,35 @@ export const updateClassComponent = fiber => {
     return;
   }
 
-  instance.props = fiber.props;
-  instance.state = Object.assign({}, instance.state, fiber.newStateStuff);
-  fiber.newStateStuff = null;
-  const newChildElements = fiber.stateNode.render();
-  reconcileChildArray(fiber, newChildElements);
+  const prevProps = instance.props;
+  const prevState = instance.state;
+  const nextProps = fiber.props;
+  const nextState = Object.assign({}, instance.state, fiber.newStateStuff);
+
+  if (newInstance) {
+    componentMountingPhase(instance, fiber);
+  } else {
+    instance.componentWillReceiveProps(prevProps, nextProps);
+    if (instance.shouldComponentUpdate(nextProps, nextState)) {
+      instance.componentWillUpdate(nextProps, nextState);
+      instance.props = fiber.props;
+      instance.state = nextState;
+      fiber.newStateStuff = null;
+      const newChildElements = fiber.stateNode.render();
+      instance.componentDidUpdate(prevProps, prevState);
+      reconcileChildArray(fiber, newChildElements);
+    } else {
+      cloneChildFibers(fiber);
+    }
+  }
 };
+
+const componentMountingPhase = (instance, fiber) => {
+  instance.componentWillMount();
+  const newChildElements = instance.render();
+  instance.componentDidMount();
+  reconcileChildArray(fiber, newChildElements);
+}
 
 export const updateHostComponent = fiber => {
   if (!fiber.stateNode) {
@@ -49,6 +73,7 @@ export const commitDeletion = (fiber, parentDom) => {
   let node = fiber;
   while (true) {
     if (node.tag === CLASS) {
+      node.stateNode.componentWillUnmount()
       node = node.child;
       continue;
     }

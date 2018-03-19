@@ -8,6 +8,18 @@ class TestApp extends Weact.Component {
     this.state = { open: false };
   }
 
+  componentDidMount() {
+    console.log("did mount!")
+  }
+
+  componentWillReceiveProps(props, nextProps) {
+    console.log([props, nextProps])
+  }
+
+  componentWillUnmount() {
+    console.log(unmounting!)
+  }
+
   render() {
     if (this.state.open) {
       return (
