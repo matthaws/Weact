@@ -7,6 +7,9 @@ export const createElement = (type, initialProps, ...args) => {
   props.children = allChildren
     .filter(child => child != null && child !== false)
     .map(child => child instanceof Object ? child : createTextElement(child));
+  if (typeof type === "function" && !type.prototype.componentDidMount) {
+    return type(props);
+  }
   return { type, props };
 };
 

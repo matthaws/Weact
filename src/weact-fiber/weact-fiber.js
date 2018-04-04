@@ -5,6 +5,8 @@ import {
   CLASS,
   HOST,
   ROOT,
+  FUNC,
+  updateFuncComponent,
   updateHostComponent,
   updateClassComponent,
   commitDeletion
@@ -35,7 +37,6 @@ export const scheduleUpdate = (instance, newStateStuff) => {
 };
 
 const processQueue = deadline => {
-
   workLoop(deadline);
   if (nextFiber || updateQueue.length > 0) {
     requestIdleCallback(processQueue);
@@ -61,7 +62,7 @@ const getNextFiber = () => {
   if (!update) {
     return;
   }
-  console.log(update.instance)
+
   if (update.newStateStuff) {
     update.instance.__fiber.newStateStuff = update.newStateStuff;
   }
@@ -97,15 +98,20 @@ const processFiber = currentFiber => {
 };
 
 const startWork = currentFiber => {
-  if (currentFiber.tag === CLASS) {
+  debugger;
+  if (
+    currentFiber.tag === CLASS &&
+    currentFiber.type.prototype.componentWillMount
+  ) {
     updateClassComponent(currentFiber);
+  } else if (typeof currentFiber.type === "function") {
+    updateFuncComponent(currentFiber);
   } else {
     updateHostComponent(currentFiber);
   }
 };
 
 const completeWork = currentFiber => {
-
   if (currentFiber.tag === CLASS) {
     currentFiber.stateNode.__fiber = currentFiber;
   }
@@ -114,23 +120,25 @@ const completeWork = currentFiber => {
     const childEffects = currentFiber.effects || [];
     const thisEffect = currentFiber.effectTag != null ? [currentFiber] : [];
     const parentEffects = currentFiber.parent.effects || [];
-    currentFiber.parent.effects = parentEffects.concat(childEffects, thisEffect);
+    currentFiber.parent.effects = parentEffects.concat(
+      childEffects,
+      thisEffect
+    );
   } else {
     pendingCommit = currentFiber;
   }
-  ;
-}
+};
 
-const commitAllWork = (rootFiber) => {
-  rootFiber.effects.forEach( fiber => {
+const commitAllWork = rootFiber => {
+  rootFiber.effects.forEach(fiber => {
     commitWork(fiber);
   });
   rootFiber.stateNode._rootContainerFiber = rootFiber;
   nextFiber = null;
   pendingCommit = null;
-}
+};
 
-const commitWork = (fiber) => {
+const commitWork = fiber => {
   if (fiber.tag === ROOT) {
     return;
   }
@@ -142,12 +150,12 @@ const commitWork = (fiber) => {
 
   const domParent = domParentFiber.stateNode;
 
-
-  if (fiber.effectTag === PLACEMENT && fiber.tag === HOST) {
+  debugger;
+  if (fiber.effectTag === PLACEMENT && fiber.tag !== CLASS) {
     domParent.appendChild(fiber.stateNode);
   } else if (fiber.effectTag === UPDATE) {
-    updateDomProperties(fiber.stateNode, fiber.alternate.props, fiber.props)
+    updateDomProperties(fiber.stateNode, fiber.alternate.props, fiber.props);
   } else if (fiber.effectTag === DELETION) {
     commitDeletion(fiber, domParent);
   }
-}
+};

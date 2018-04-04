@@ -23,6 +23,12 @@ export const createDomElement = fiber => {
   return dom;
 };
 
+export const createDomFromFunc = fiber => {
+  const dom = document.createElement(fiber.type(fiber.props));
+  updateDomProperties(dom, {}, fiber.props);
+  return dom;
+}
+
 const removeEventListeners = (domElement, prevProps, nextProps) => {
   Object.keys(prevProps)
     .filter(isEvent)

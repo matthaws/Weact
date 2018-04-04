@@ -2,6 +2,12 @@
 import Weact from "./weact/weact";
 import WeactDOM from "./weact-dom/weact-dom";
 
+const TestFunc = (props) => {
+  return (
+    <p>Test Func is {props.sampleProp}</p>
+  )
+}
+
 class TestApp extends Weact.Component {
   constructor(props) {
     super(props);
@@ -17,24 +23,18 @@ class TestApp extends Weact.Component {
   }
 
   componentWillUnmount() {
-    console.log(unmounting!)
+    console.log("unmounting!")
   }
 
   render() {
-    if (this.state.open) {
-      return (
-        <div>
-          <h1> The tab is open! </h1>
-          <button onClick={e => this.setState({ open: false })}>Close</button>
-        </div>
-      );
-    }
     return (
       <div>
-        <button onClick={e => this.setState({ open: true })}> Open </button>
+        <TestFunc sampleProp="Hello" />
       </div>
-    );
+    )
   }
 }
+
+
 
 WeactDOM.render(<TestApp />, document.getElementById("root"));
