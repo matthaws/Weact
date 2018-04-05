@@ -5,7 +5,7 @@ import {
   isDomElement,
   isNew,
   isGone
-} from "../weact/weact-util";
+} from "../util/weactUtil";
 
 export const updateDomProperties = (dom, prevProps, nextProps) => {
   removeEventListeners(dom, prevProps, nextProps);
@@ -27,7 +27,7 @@ export const createDomFromFunc = fiber => {
   const dom = document.createElement(fiber.type(fiber.props));
   updateDomProperties(dom, {}, fiber.props);
   return dom;
-}
+};
 
 const removeEventListeners = (domElement, prevProps, nextProps) => {
   Object.keys(prevProps)

@@ -1,4 +1,4 @@
-import { TEXT_ELEMENT } from "./weact-util";
+import { TEXT_ELEMENT } from "../util/weactUtil";
 
 export const createElement = (type, initialProps, ...args) => {
   const props = Object.assign({}, initialProps);

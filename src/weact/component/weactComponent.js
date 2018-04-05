@@ -1,4 +1,4 @@
-import { scheduleUpdate } from "../weact-fiber/weact-fiber";
+import { scheduleUpdate } from "../fiber/1-fiberLoop";
 
 export class Component {
   constructor(props) {

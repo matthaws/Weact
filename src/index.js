@@ -1,6 +1,5 @@
 /** @jsx Weact.createElement */
 import Weact from "./weact/weact";
-import WeactDOM from "./weact-dom/weact-dom";
 
 const TestFunc = (props) => {
   return (
@@ -37,4 +36,4 @@ class TestApp extends Weact.Component {
 
 
 
-WeactDOM.render(<TestApp />, document.getElementById("root"));
+Weact.render(<TestApp />, document.getElementById("root"));

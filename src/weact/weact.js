@@ -1,9 +1,11 @@
-import { createElement } from "./weact-elements";
-import { Component } from "./weact-component";
+import { createElement } from "./elements/weactElements";
+import { Component } from "./component/weactComponent";
+import { render } from "./fiber/1-fiberLoop";
 
 const Weact = {
   createElement,
-  Component
+  Component,
+  render
 };
 
 export default Weact;
