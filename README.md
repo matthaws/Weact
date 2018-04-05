@@ -19,3 +19,12 @@ I hope to add to this project with my own implementations of:
 
 * React Router (Weact Wouter)
 * Redux (Wedux)
+
+## Acknowledgements ##
+React is a very clever piece of tech, especially its new Fiber plumbing, and I'm indebted to some great articles and guides to help me dig in and get to grips on the concepts and how to recreate them. I highly recommend checking them out, especially if you are at all interested in embarking on a similar project:
+
+* [Andrew Clark's "React Fiber Architecture"](https://github.com/acdlite/react-fiber-architecture) - an excellent high level overview from an excellent source!
+
+* [Rodrigo Pombo's "Build Your Own React"](https://engineering.hexacta.com/didact-fiber-incremental-reconciliation-b2fe028dcaec) - An incredibly helpful series of posts laying out classic React virtual DOM diffing and, in the latest post, the best and most detailed discussion of Fiber implementation I've seen yet.
+
+* [Ofir Dagan's "Build Your Own React"](https://hackernoon.com/build-your-own-react-48edb8ed350d) This is just for classic, simple reconciliation, no Fiber, but is a very helpful dive into basic React functionality.
