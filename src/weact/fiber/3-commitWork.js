@@ -9,13 +9,14 @@ import {
 } from "../util/fiberUtil";
 import { updateDomProperties } from "../dom/weactDom";
 
-const commitAllWork = rootFiber => {
-  rootFiber.effects.forEach(fiber => {
+export const commitAllWork = globalQueue => {
+  globalQueue.pendingCommit.effects.forEach(fiber => {
     commitWork(fiber);
   });
-  rootFiber.stateNode._rootContainerFiber = rootFiber;
-  nextFiber = null;
-  pendingCommit = null;
+  globalQueue.pendingCommit.stateNode._rootContainerFiber =
+    globalQueue.pendingCommit;
+  globalQueue.nextFiber = null;
+  globalQueue.pendingCommit = null;
 };
 
 const commitWork = fiber => {
@@ -29,8 +30,6 @@ const commitWork = fiber => {
   }
 
   const domParent = domParentFiber.stateNode;
-
-  debugger;
   if (fiber.effectTag === PLACEMENT && fiber.tag !== CLASS) {
     domParent.appendChild(fiber.stateNode);
   } else if (fiber.effectTag === UPDATE) {

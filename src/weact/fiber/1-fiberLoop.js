@@ -1,14 +1,17 @@
 import { processFiber } from "./2-processFiber";
 import { HOST, CLASS } from "../util/fiberUtil";
+import { commitAllWork } from "./3-commitWork";
 
 // Global queue/state for rendering process
-const updateQueue = [];
-let nextFiber = null;
-
+const globalQueue = {
+  updateQueue: [],
+  nextFiber: null,
+  pendingCommit: null
+}
 
 // Initializers (adds changes to queue)
 export const render = (elements, rootDom) => {
-  updateQueue.push({
+  globalQueue.updateQueue.push({
     from: HOST,
     dom: rootDom,
     newProps: {
@@ -19,7 +22,7 @@ export const render = (elements, rootDom) => {
 };
 
 export const scheduleUpdate = (instance, newStateStuff) => {
-  updateQueue.push({
+  globalQueue.updateQueue.push({
     from: CLASS,
     instance,
     newStateStuff
@@ -30,29 +33,29 @@ export const scheduleUpdate = (instance, newStateStuff) => {
 // Callback that fires off the workflow loop
 const processQueue = deadline => {
   workLoop(deadline);
-  if (nextFiber || updateQueue.length > 0) {
+  if (globalQueue.nextFiber || globalQueue.updateQueue.length > 0) {
     requestIdleCallback(processQueue);
   }
 };
 
 // Master function that handles the three stages of the workflow
 const workLoop = deadline => {
-  if (!nextFiber) {
+  if (!globalQueue.nextFiber) {
     getNextFiber();
   }
 
-  while (nextFiber && deadline.timeRemaining() > 1) {
-    nextFiber = processFiber(nextFiber);
+  while (globalQueue.nextFiber && deadline.timeRemaining() > 1) {
+    globalQueue.nextFiber = processFiber(globalQueue);
   }
 
-  if (pendingCommit) {
-    commitAllWork(pendingCommit);
+  if (globalQueue.pendingCommit) {
+    commitAllWork(globalQueue);
   }
 };
 
 // Step 1 of workflow, pulling off the next change from the queue
 const getNextFiber = () => {
-  const update = updateQueue.shift();
+  const update = globalQueue.updateQueue.shift();
   if (!update) {
     return;
   }
@@ -66,7 +69,7 @@ const getNextFiber = () => {
       ? update.dom._rootContainerFiber
       : getRoot(update.instance.__fiber);
 
-  nextFiber = {
+  globalQueue.nextFiber = {
     tag: HOST,
     stateNode: update.dom || root.stateNode,
     props: update.newProps || root.props,

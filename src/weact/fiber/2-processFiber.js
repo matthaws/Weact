@@ -11,11 +11,9 @@ import {
 } from "../util/fiberUtil";
 import { createDomElement } from "../dom/weactDom";
 
-
-let pendingCommit = null;
-
 // Step 2 of workflow, determines the changes to be made to the dom
-export const processFiber = currentFiber => {
+export const processFiber = (globalQueue) => {
+  const currentFiber = globalQueue.nextFiber;
   startWork(currentFiber);
   if (currentFiber.child) {
     return currentFiber.child;
@@ -23,7 +21,7 @@ export const processFiber = currentFiber => {
 
   let current = currentFiber;
   while (current) {
-    completeWork(current);
+    completeWork(current, globalQueue);
     if (current.sibling) {
       return current.sibling;
     }
@@ -49,7 +47,7 @@ const startWork = currentFiber => {
 // collects all changes to be made in the parent component - changes '
 // trickle up' into a collection in the root array.
 
-const completeWork = currentFiber => {
+const completeWork = (currentFiber, globalQueue) => {
   if (currentFiber.tag === CLASS) {
     currentFiber.stateNode.__fiber = currentFiber;
   }
@@ -63,7 +61,7 @@ const completeWork = currentFiber => {
       thisEffect
     );
   } else {
-    pendingCommit = currentFiber;
+    globalQueue.pendingCommit = currentFiber;
   }
 };
 
@@ -75,14 +73,12 @@ export const createInstance = fiber => {
 
 // updates class - lifecycle methods called here
 const updateClassComponent = fiber => {
-  debugger;
   let newInstance = false;
   let instance = fiber.stateNode;
   if (!instance) {
     newInstance = true;
     fiber.stateNode = createInstance(fiber);
     instance = fiber.stateNode;
-    debugger;
   } else if (fiber.props == instance.props && !fiber.newStateStuff) {
     cloneChildFibers(fiber);
     return;
