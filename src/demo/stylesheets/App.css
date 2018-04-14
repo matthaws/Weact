@@ -1,0 +1,55 @@
+html {
+  background-image: linear-gradient(to right, #159957, #155799);
+  font-family: 'Ubuntu', sans-serif;
+  height: 100%;
+}
+
+body {
+  height: 100%;
+}
+
+h1, h3 {
+  text-align: center;
+  color: #B9D6F2;
+  text-shadow: 1px 1px black;
+}
+
+h2 {
+
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#tabs {
+  position: absolute;
+  top: -30px;
+}
+
+#tabs li {
+  border-radius: 10px;
+  padding: 8px;
+  z-index: -1;
+  background-color: #061A40
+  color: #B9D6F2;
+}
+
+#main-area {
+  z-index: 5;
+  position: relative;
+  width: 75vw;
+  padding: 20px;
+  background-color: #061A40;
+  color: #B9D6F2;
+  margin: 0 auto;
+  margin-top: 100px;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.text-field {
+  text-align: center;
+}

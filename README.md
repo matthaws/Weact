@@ -1,9 +1,10 @@
-# Weact #
-### Wee little recreation of React ###
+# Weact
+
+### Wee little recreation of React
 
 A dive into React's magic through recreating its core features.
 
-## Features ##
+## Features
 
 * JSX parsing via Babel, Rollup, and Weact.createElement. Use JSX syntax to your heart's content!
 
@@ -11,16 +12,17 @@ A dive into React's magic through recreating its core features.
 
 * Processes and updates event handlers, attributes, and inline styles to the DOM
 
-* Uses an incremental rendering, time-slicing reconciliation workflow inspired by the new React Fiber architecture. Reconciliation with the virtual DOM doesn't block the thread, woo hoo! This post on my blog gives more details on how I implemented this.
+* Uses an incremental rendering, time-slicing reconciliation workflow inspired by the new React Fiber architecture. Reconciliation with the virtual DOM doesn't block the thread, woo hoo! [This post on my blog](http://matthaws.com/the-blog/posts/react-fiber/) gives more details on how I implemented this.
 
-## Future Additions ##
+## Future Additions
 
 I hope to add to this project with my own implementations of:
 
 * React Router (Weact Wouter)
 * Redux (Wedux)
 
-## Acknowledgements ##
+## Acknowledgements
+
 React is a very clever piece of tech, especially its new Fiber plumbing, and I'm indebted to some great articles and guides for helping me dig in and get to grips on the concepts and how to recreate them. I highly recommend checking them out, especially if you are at all interested in embarking on a similar project:
 
 * [Andrew Clark's "React Fiber Architecture"](https://github.com/acdlite/react-fiber-architecture) - an excellent high level overview from an excellent source!
