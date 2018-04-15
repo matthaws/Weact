@@ -15,3 +15,5 @@ class Redirect extends Weact.Component {
     return null;
   }
 }
+
+export default Redirect;

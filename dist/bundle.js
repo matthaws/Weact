@@ -536,6 +536,11 @@ var Component = function () {
     value: function setState(newStateStuff) {
       scheduleUpdate(this, newStateStuff);
     }
+  }, {
+    key: "forceUpdate",
+    value: function forceUpdate() {
+      scheduleUpdate(this, {});
+    }
 
     //lifecycle methods
 
@@ -700,77 +705,166 @@ var GifOMatic = function (_Weact$Component) {
   return GifOMatic;
 }(Weact.Component);
 
-var App = function (_Weact$Component) {
-  inherits(App, _Weact$Component);
+var routes = [];
 
-  function App(props) {
-    classCallCheck(this, App);
+var registerRoute = function registerRoute(route) {
+  return routes.push(route);
+};
+var unregisterRoute = function unregisterRoute(route) {
+  return routes.splice(routes.indexOf(route));
+};
 
-    var _this = possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
+var historyPush = function historyPush(path) {
+  history.pushState({}, null, path);
+  routes.forEach(function (route) {
+    return route.forceUpdate();
+  });
+};
 
-    _this.state = {
-      page: 0
-    };
+var matchPath = function matchPath(pathname, options) {
+  var _options$exact = options.exact,
+      exact = _options$exact === undefined ? false : _options$exact,
+      path = options.path;
 
-    _this.handleTabChange = _this.handleTabChange.bind(_this);
+  var pathArray = path.split("/");
+  var currentPathArray = pathname.split("/");
+  var params = {};
+
+  if (exact && pathArray.length !== currentPathArray.length) {
+    return null;
+  }
+  for (var i = 0; i < currentPathArray.length; i++) {
+    if (pathArray[i] && pathArray[i].startsWith(":")) {
+      params[pathArray[i].slice(1)] = currentPathArray[i];
+    } else if (currentPathArray[i] !== pathArray[i]) {
+      return null;
+    }
+  }
+
+  return {
+    path: path,
+    url: pathname,
+    params: params
+  };
+};
+
+var Route = function (_Weact$Component) {
+  inherits(Route, _Weact$Component);
+
+  function Route(props) {
+    classCallCheck(this, Route);
+
+    var _this = possibleConstructorReturn(this, (Route.__proto__ || Object.getPrototypeOf(Route)).call(this, props));
+
+    _this.handleHistoryChange = _this.handleHistoryChange.bind(_this);
     return _this;
   }
 
-  createClass(App, [{
-    key: "handleTabChange",
-    value: function handleTabChange(idx) {
-      var _this2 = this;
-
-      return function () {
-        _this2.setState({ page: idx });
-      };
+  createClass(Route, [{
+    key: "componentWillMount",
+    value: function componentWillMount() {
+      document.addEventListener("popstate", this.handleHistoryChange);
+      registerRoute(this);
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      document.removeEventListener("popstate", this.handleHistoryChange);
+      unregisterRoute(this);
+    }
+  }, {
+    key: "handleHistoryChange",
+    value: function handleHistoryChange() {
+      this.forceUpdate();
     }
   }, {
     key: "render",
     value: function render() {
-      var _this3 = this;
+      var _props = this.props,
+          exact = _props.exact,
+          path = _props.path,
+          Component = _props.component,
+          render = _props.render;
 
-      var pages = [Weact.createElement(Welcome, null), Weact.createElement(GifOMatic, null)];
-      var tabs = ["Welcome", "Gif-O-Matic"];
+      var match = matchPath(location.pathname, { path: path, exact: exact });
+
+      if (!match) {
+        return null;
+      }
+
+      if (component) {
+        return Weact.createElement(Component, { match: match });
+      }
+
+      if (render) {
+        return render({ match: match });
+      }
+
+      return null;
+    }
+  }]);
+  return Route;
+}(Weact.Component);
+
+var Link = function (_Weact$Component) {
+  inherits(Link, _Weact$Component);
+
+  function Link(props) {
+    classCallCheck(this, Link);
+
+    var _this = possibleConstructorReturn(this, (Link.__proto__ || Object.getPrototypeOf(Link)).call(this, props));
+
+    _this.handleClick = _this.handleClick.bind(_this);
+    return _this;
+  }
+
+  createClass(Link, [{
+    key: "handleClick",
+    value: function handleClick(e) {
+      e.preventDefault();
+      var to = this.props.to;
+
+      historyPush(to);
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _props = this.props,
+          to = _props.to,
+          children = _props.children;
+
       return Weact.createElement(
-        "main",
-        { className: "app" },
-        Weact.createElement(
-          "h1",
-          null,
-          "Welcome to Weact!"
-        ),
-        Weact.createElement(
-          "h3",
-          null,
-          "Just like React, only wee"
-        ),
-        Weact.createElement(
-          "section",
-          { id: "main-area" },
-          Weact.createElement(
-            "ul",
-            { id: "tabs" },
-            tabs.map(function (tab, idx) {
-              var className = _this3.state.page === idx ? "selected" : null;
-              return Weact.createElement(
-                "li",
-                {
-                  onClick: _this3.handleTabChange(idx),
-                  key: tab,
-                  className: className
-                },
-                tab
-              );
-            })
-          ),
-          pages[this.state.page]
-        )
+        "a",
+        { href: to, onClick: this.handleClick },
+        children
       );
     }
   }]);
-  return App;
+  return Link;
 }(Weact.Component);
+
+var App = function App() {
+  var pages = [Weact.createElement(Welcome, null), Weact.createElement(GifOMatic, null)];
+  return Weact.createElement(
+    "main",
+    { className: "app" },
+    Weact.createElement(
+      "h1",
+      null,
+      "Welcome to Weact!"
+    ),
+    Weact.createElement(
+      "h3",
+      null,
+      "Just like React, only wee"
+    ),
+    Weact.createElement(
+      "section",
+      { id: "main-area" },
+      Weact.createElement(Route, { exact: true, path: "/", component: Welcome })
+    )
+  );
+};
 
 /** @jsx Weact.createElement */
 

@@ -22,3 +22,5 @@ class Link extends Weact.Component {
     );
   }
 }
+
+export default Link;

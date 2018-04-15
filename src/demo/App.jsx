@@ -1,8 +1,8 @@
 import Weact from "../weact/weact";
 import Welcome from "./components/welcome.jsx";
 import GifOMatic from "./components/gifomatic.jsx";
-import Route from "../weact/router/route";
-import Link from "../weact/router/link";
+import Route from "../weact/router/route.jsx";
+import Link from "../weact/router/link.jsx";
 
 const App = () => {
   const pages = [<Welcome />, <GifOMatic />];
