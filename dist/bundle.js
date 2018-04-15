@@ -741,7 +741,6 @@ var Link = function (_Weact$Component) {
 }(Weact.Component);
 
 var App = function App() {
-  var pages = [Weact.createElement(Welcome, null), Weact.createElement(GifOMatic, null)];
   return Weact.createElement(
     "main",
     { className: "app" },

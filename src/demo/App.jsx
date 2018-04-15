@@ -4,8 +4,6 @@ import Route from "../weact/router/route.jsx";
 import Link from "../weact/router/link.jsx";
 
 const App = () => {
-  const pages = [<Welcome />, <GifOMatic />];
-  const tabs = ["Welcome", "Gif-O-Matic"];
   return (
     <main className="app">
       <h1>Welcome to Weact!</h1>
