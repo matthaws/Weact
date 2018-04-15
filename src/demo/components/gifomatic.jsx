@@ -1,5 +1,4 @@
 import Weact from "../../weact/weact.js";
-import { fetchRandomGif } from "../util/gif_api_util.js";
 
 class GifOMatic extends Weact.Component {
   constructor(props) {
@@ -10,9 +9,9 @@ class GifOMatic extends Weact.Component {
   }
 
   handleSearchSubmit() {
-    fetchRandomGif(this.state.searchTerm).then(gif => {
-      this.setState({ gif });
-    });
+    // fetchRandomGif(this.state.searchTerm).then(gif => {
+    //   this.setState({ gif });
+    // });
   }
 
   handleChange(e) {
