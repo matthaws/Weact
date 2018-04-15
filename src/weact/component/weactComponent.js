@@ -10,6 +10,10 @@ export class Component {
     scheduleUpdate(this, newStateStuff);
   }
 
+  forceUpdate() {
+    scheduleUpdate(this, {});
+  }
+
   //lifecycle methods
 
   componentWillMount() {}
