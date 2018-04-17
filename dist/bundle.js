@@ -749,7 +749,7 @@ var hashRouter = function hashRouter(_ref) {
   }
   var path = location.href.slice(hostname.length + 8);
   if (!path.startsWith("#")) {
-    return Weact.createElement(Redirect, { to: hostname + "/#" + path });
+    return Weact.createElement(Redirect, { to: "/#" + path });
   } else {
     return children;
   }

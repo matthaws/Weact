@@ -7,7 +7,7 @@ const hashRouter = ({ hostname, children }) => {
   }
   const path = location.href.slice(hostname.length + 8);
   if (!path.startsWith("#")) {
-    return <Redirect to={`${hostname}/#${path}`} />;
+    return <Redirect to={`/#${path}`} />;
   } else {
     return children;
   }
