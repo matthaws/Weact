@@ -6,7 +6,7 @@ import HashRouter from "../weact/router/hashRouter.jsx";
 
 const App = () => {
   return (
-    <HashRouter hostname="matthaws.com/Weact">
+    <HashRouter rootFolder="Weact/">
       <main className="app">
         <h1>Welcome to Weact!</h1>
         <h3>Just like React, only wee</h3>
