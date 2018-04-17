@@ -1,32 +1,5 @@
 'use strict';
 
-require("core-js/shim");
-
-require("regenerator-runtime/runtime");
-
-require("core-js/fn/regexp/escape");
-
-if (global._babelPolyfill) {
-  throw new Error("only one instance of babel-polyfill is allowed");
-}
-global._babelPolyfill = true;
-
-var DEFINE_PROPERTY = "defineProperty";
-function define(O, key, value) {
-  O[key] || Object[DEFINE_PROPERTY](O, key, {
-    writable: true,
-    configurable: true,
-    value: value
-  });
-}
-
-define(String.prototype, "padLeft", "".padStart);
-define(String.prototype, "padRight", "".padEnd);
-
-"pop,reverse,shift,keys,values,entries,indexOf,every,some,forEach,map,filter,find,findIndex,includes,join,slice,concat,push,splice,unshift,sort,lastIndexOf,reduce,reduceRight,copyWithin,fill".split(",").forEach(function (key) {
-  [][key] && define(Array, key, Function.call.bind([][key]));
-});
-
 var TEXT_ELEMENT = "TEXT_ELEMENT";
 var isEvent = function isEvent(name) {
   return name.startsWith("on");
@@ -587,17 +560,7 @@ var Welcome = function Welcome() {
     Weact.createElement(
       "p",
       null,
-      "This project was built with love out of a desire to understand how React works under the hood. It supports JSX parsing, component state, props, functional components, class components, and all current lifecycle methods - future updates will incorporate the new lifecyle methods coming soon to React. It also features an incremental rendering and reconciliation process based on React's new fiber architecture. See this post on my blog for more info on this project!"
-    ),
-    Weact.createElement(
-      "p",
-      null,
-      "I put together a few widgets to show Weact in action. Enjoy!"
-    ),
-    Weact.createElement(
-      "p",
-      null,
-      "-Matt"
+      "This project was built with love out of a desire to understand how React works under the hood. It supports JSX parsing, component state, props, functional components, class components, and all current lifecycle methods as well - future updates will incorporate the new lifecyle methods coming soon to React. It supports basic routing similar to react-router, and it also features an incremental rendering and reconciliation process based on React's new fiber architecture. See this post on my blog for more info on this project!"
     )
   );
 };

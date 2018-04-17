@@ -6,11 +6,12 @@
       {
         "pragma": "Weact.createElement"
       }
-    ],
+    ]
   ],
   "presets": [
     [
-      "env", {
+      "env",
+      {
         "modules": false
       }
     ]

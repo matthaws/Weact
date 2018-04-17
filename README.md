@@ -14,11 +14,12 @@ A dive into React's magic through recreating its core features.
 
 * Uses an incremental rendering, time-slicing reconciliation workflow inspired by the new React Fiber architecture. Reconciliation with the virtual DOM doesn't block the thread, woo hoo! [This post on my blog](http://matthaws.com/the-blog/posts/react-fiber/) gives more details on how I implemented this.
 
+* Now includes basic routing with Route, Link, and Redirect classes!
+
 ## Future Additions
 
 I hope to add to this project with my own implementations of:
 
-* React Router (Weact Wouter)
 * Redux (Wedux)
 
 ## Acknowledgements
