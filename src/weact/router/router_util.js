@@ -13,7 +13,7 @@ export const historyReplace = path => {
   routes.forEach(route => route.forceUpdate());
 };
 
-export const matchPath = (pathname, options) => {
+export const matchPath = (pathname = "", options) => {
   const { exact = false, path } = options;
   const pathArray = path.split("/");
   const currentPathArray = pathname.split("/");
