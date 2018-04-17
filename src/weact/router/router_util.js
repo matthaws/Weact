@@ -1,15 +1,14 @@
 let routes = [];
-
 export const registerRoute = route => routes.push(route);
 export const unregisterRoute = route => routes.splice(routes.indexOf(route));
 
 export const historyPush = path => {
-  history.pushState({}, null, path);
+  history.pushState({}, null, `#/${path}`);
   routes.forEach(route => route.forceUpdate());
 };
 
 export const historyReplace = path => {
-  history.replaceState({}, null, path);
+  history.replaceState({}, null, `#/${path}`;
   routes.forEach(route => route.forceUpdate());
 };
 
