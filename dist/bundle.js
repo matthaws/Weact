@@ -566,7 +566,6 @@ var Welcome = function Welcome() {
 };
 
 var routes = [];
-
 var registerRoute = function registerRoute(route) {
   return routes.push(route);
 };
@@ -575,14 +574,14 @@ var unregisterRoute = function unregisterRoute(route) {
 };
 
 var historyPush = function historyPush(path) {
-  history.pushState({}, null, path);
+  history.pushState({}, null, "#/" + path);
   routes.forEach(function (route) {
     return route.forceUpdate();
   });
 };
 
 var historyReplace = function historyReplace(path) {
-  history.replaceState({}, null, path);
+  history.replaceState({}, null, "#/" + path);
   routes.forEach(function (route) {
     return route.forceUpdate();
   });
@@ -656,7 +655,7 @@ var Route = function (_Weact$Component) {
           render = _props.render;
 
       var match = matchPath(location.pathname.split("#")[1], { path: path, exact: exact });
-
+      debugger;
       if (!match) {
         return null;
       }
@@ -744,13 +743,10 @@ var Redirect = function (_Weact$Component) {
 
 var hashRouter = function hashRouter(_ref) {
   var _ref$rootFolder = _ref.rootFolder,
-      rootFolder = _ref$rootFolder === undefined ? "" : _ref$rootFolder,
       children = _ref.children;
 
-  var pathStart = location.protocol.length + 3 + location.hostname.length + rootFolder.length;
-  var appPath = location.href.slice(pathStart);
-  if (!appPath.startsWith("#")) {
-    return Weact.createElement(Redirect, { to: rootFolder + "/#/" + appPath });
+  if (!location.href.split("").include("#")) {
+    return Weact.createElement(Redirect, { to: "" + location.pathname });
   } else {
     return Weact.createElement(
       "main",

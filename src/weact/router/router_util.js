@@ -8,7 +8,7 @@ export const historyPush = path => {
 };
 
 export const historyReplace = path => {
-  history.replaceState({}, null, `#/${path}`;
+  history.replaceState({}, null, `#/${path}`);
   routes.forEach(route => route.forceUpdate());
 };
 
