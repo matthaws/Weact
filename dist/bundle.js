@@ -747,6 +747,7 @@ var hashRouter = function hashRouter(_ref) {
 
   var pathStart = location.protocol.length + 3 + location.hostname.length + rootFolder.length;
   var appPath = location.href.split(pathStart);
+  debugger;
   if (!appPath.startsWith("#")) {
     return Weact.createElement(Redirect, { to: rootFolder + "/#/" + appPath });
   } else {
