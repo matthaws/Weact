@@ -581,6 +581,13 @@ var historyPush = function historyPush(path) {
   });
 };
 
+var historyReplace = function historyReplace(path) {
+  history.replaceState({}, null, path);
+  routes.forEach(function (route) {
+    return route.forceUpdate();
+  });
+};
+
 var matchPath = function matchPath(pathname, options) {
   var _options$exact = options.exact,
       exact = _options$exact === undefined ? false : _options$exact,
@@ -703,24 +710,73 @@ var Link = function (_Weact$Component) {
   return Link;
 }(Weact.Component);
 
+var Redirect = function (_Weact$Component) {
+  inherits(Redirect, _Weact$Component);
+
+  function Redirect() {
+    classCallCheck(this, Redirect);
+    return possibleConstructorReturn(this, (Redirect.__proto__ || Object.getPrototypeOf(Redirect)).apply(this, arguments));
+  }
+
+  createClass(Redirect, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _props = this.props,
+          to = _props.to,
+          push = _props.push;
+
+      if (push) {
+        historyPush(to);
+      } else {
+        historyReplace(to);
+      }
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return null;
+    }
+  }]);
+  return Redirect;
+}(Weact.Component);
+
+var hashRouter = function hashRouter(_ref) {
+  var hostname = _ref.hostname,
+      children = _ref.children;
+
+  if (!hostname) {
+    hostname = location.hostname;
+  }
+  var path = location.href.slice(hostname.length + 8);
+  if (!path.startsWith("#")) {
+    return Weact.createElement(Redirect, { to: hostname + "/#" + path });
+  } else {
+    return children;
+  }
+};
+
 var App = function App() {
   return Weact.createElement(
-    "main",
-    { className: "app" },
+    hashRouter,
+    { hostname: "matthaws.com/Weact" },
     Weact.createElement(
-      "h1",
-      null,
-      "Welcome to Weact!"
-    ),
-    Weact.createElement(
-      "h3",
-      null,
-      "Just like React, only wee"
-    ),
-    Weact.createElement(
-      "section",
-      { id: "main-area" },
-      Weact.createElement(Route, { exact: true, path: "/", component: Welcome })
+      "main",
+      { className: "app" },
+      Weact.createElement(
+        "h1",
+        null,
+        "Welcome to Weact!"
+      ),
+      Weact.createElement(
+        "h3",
+        null,
+        "Just like React, only wee"
+      ),
+      Weact.createElement(
+        "section",
+        { id: "main-area" },
+        Weact.createElement(Route, { exact: true, path: "/", component: Welcome })
+      )
     )
   );
 };
