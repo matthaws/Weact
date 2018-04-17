@@ -653,7 +653,7 @@ var Route = function (_Weact$Component) {
           Component = _props.component,
           render = _props.render;
 
-      var match = matchPath(location.pathname, { path: path, exact: exact });
+      var match = matchPath(location.pathname.split("#")[1], { path: path, exact: exact });
 
       if (!match) {
         return null;
@@ -741,24 +741,27 @@ var Redirect = function (_Weact$Component) {
 }(Weact.Component);
 
 var hashRouter = function hashRouter(_ref) {
-  var hostname = _ref.hostname,
+  var _ref$rootFolder = _ref.rootFolder,
+      rootFolder = _ref$rootFolder === undefined ? "" : _ref$rootFolder,
       children = _ref.children;
 
-  if (!hostname) {
-    hostname = location.hostname;
-  }
-  var path = location.href.slice(hostname.length + 8);
-  if (!path.startsWith("#")) {
-    return Weact.createElement(Redirect, { to: "/#" + path });
+  var pathStart = location.protocol.length + 2 + location.hostname.length + rootFolder.length;
+  var appPath = location.href.split(pathStart);
+  if (!appPath.startsWith("#")) {
+    return Weact.createElement(Redirect, { to: rootFolder + "/#/" + appPath });
   } else {
-    return children;
+    return Weact.createElement(
+      "main",
+      null,
+      children
+    );
   }
 };
 
 var App = function App() {
   return Weact.createElement(
     hashRouter,
-    { hostname: "matthaws.com/Weact" },
+    { rootFolder: "Weact/" },
     Weact.createElement(
       "main",
       { className: "app" },
