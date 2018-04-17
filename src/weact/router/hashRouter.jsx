@@ -3,7 +3,7 @@ import Redirect from "./redirect.jsx";
 
 const hashRouter = ({ rootFolder = "", children }) => {
   const pathStart =
-    location.protocol.length + 2 + location.hostname.length + rootFolder.length;
+    location.protocol.length + 3 + location.hostname.length + rootFolder.length;
   const appPath = location.href.split(pathStart);
   if (!appPath.startsWith("#")) {
     return <Redirect to={`${rootFolder}/#/${appPath}`} />;
