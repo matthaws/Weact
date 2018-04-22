@@ -574,14 +574,14 @@ var unregisterRoute = function unregisterRoute(route) {
 };
 
 var historyPush = function historyPush(path) {
-  history.pushState({}, null, "/#/" + path);
+  history.pushState({}, null, "/#" + path);
   routes.forEach(function (route) {
     return route.forceUpdate();
   });
 };
 
 var historyReplace = function historyReplace(path) {
-  history.replaceState({}, null, "/#/" + path);
+  history.replaceState({}, null, "/#" + path);
   routes.forEach(function (route) {
     return route.forceUpdate();
   });
@@ -655,7 +655,6 @@ var Route = function (_Weact$Component) {
           render = _props.render;
 
       var match = matchPath(location.pathname.split("#")[1], { path: path, exact: exact });
-      debugger;
       if (!match) {
         return null;
       }
