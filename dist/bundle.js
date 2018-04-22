@@ -745,8 +745,8 @@ var hashRouter = function hashRouter(_ref) {
   var _ref$rootFolder = _ref.rootFolder,
       children = _ref.children;
 
-  if (!location.href.split("").include("#")) {
-    return Weact.createElement(Redirect, { to: "" + location.pathname });
+  if (!location.href.split("").includes("#")) {
+    return Weact.createElement(Redirect, { to: "#" + location.pathname });
   } else {
     return Weact.createElement(
       "main",
