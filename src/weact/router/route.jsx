@@ -23,7 +23,7 @@ class Route extends Weact.Component {
 
   render() {
     const { exact, path, component: Component, render } = this.props;
-    const match = matchPath(location.pathname.split("#")[1], { path, exact });
+    const match = matchPath(location.pathname, { path, exact });
     if (!match) {
       return null;
     }
