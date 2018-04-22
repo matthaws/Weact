@@ -659,7 +659,7 @@ var Route = function (_Weact$Component) {
         return null;
       }
 
-      if (component) {
+      if (Component) {
         return Weact.createElement(Component, { match: match });
       }
 

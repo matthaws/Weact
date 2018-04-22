@@ -28,7 +28,7 @@ class Route extends Weact.Component {
       return null;
     }
 
-    if (component) {
+    if (Component) {
       return <Component match={match} />;
     }
 
