@@ -4,7 +4,7 @@
 
 A dive into React's magic through recreating its core features.
 
-[Live Demo](www.weact-demo.com)
+[Live Demo](http://www.weact-demo.com)
 
 ## Features
 
