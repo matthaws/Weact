@@ -574,14 +574,14 @@ var unregisterRoute = function unregisterRoute(route) {
 };
 
 var historyPush = function historyPush(path) {
-  history.pushState({}, null, "#/" + path);
+  history.pushState({}, null, "/#/" + path);
   routes.forEach(function (route) {
     return route.forceUpdate();
   });
 };
 
 var historyReplace = function historyReplace(path) {
-  history.replaceState({}, null, "#/" + path);
+  history.replaceState({}, null, "/#/" + path);
   routes.forEach(function (route) {
     return route.forceUpdate();
   });
@@ -746,7 +746,7 @@ var hashRouter = function hashRouter(_ref) {
       children = _ref.children;
 
   if (!location.href.split("").includes("#")) {
-    return Weact.createElement(Redirect, { to: "#" + location.pathname });
+    return Weact.createElement(Redirect, { to: "/#" + location.pathname });
   } else {
     return Weact.createElement(
       "main",
