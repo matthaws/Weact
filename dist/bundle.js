@@ -590,6 +590,8 @@ var historyReplace = function historyReplace(path) {
 var matchPath = function matchPath() {
   var pathname = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
   var options = arguments[1];
+
+  debugger;
   var _options$exact = options.exact,
       exact = _options$exact === undefined ? false : _options$exact,
       path = options.path;

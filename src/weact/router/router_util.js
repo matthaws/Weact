@@ -13,6 +13,7 @@ export const historyReplace = path => {
 };
 
 export const matchPath = (pathname = "", options) => {
+  debugger;
   const { exact = false, path } = options;
   const pathArray = path.split("/");
   const currentPathArray = pathname.split("/");
