@@ -16,11 +16,7 @@ A dive into React's magic through recreating its core features.
 
 * Now includes basic routing with Route, Link, and Redirect classes!
 
-## Future Additions
-
-I hope to add to this project with my own implementations of:
-
-* Redux (Wedux)
+* Now includes "Wedux" with `createStore` and `combineReducers`.
 
 ## Acknowledgements
 

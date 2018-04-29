@@ -1,4 +1,4 @@
-const createStore = reducer => {
+export const createStore = reducer => {
   let state = reducer();
 
   const store = {
@@ -14,7 +14,7 @@ const createStore = reducer => {
   return store;
 };
 
-const combineReducers = reducersObj => {
+export const combineReducers = reducersObj => {
   return (state, action) => {
     const newState = {};
     Object.keys(reducersObj).forEach(reducerName => {
