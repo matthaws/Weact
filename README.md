@@ -4,6 +4,8 @@
 
 A dive into React's magic through recreating its core features.
 
+[Live Demo](http://www.weact-demo.com)
+
 ## Features
 
 * JSX parsing via Babel, Rollup, and Weact.createElement. Use JSX syntax to your heart's content!
