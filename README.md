@@ -16,7 +16,7 @@ A dive into React's magic through recreating its core features.
 
 * Now includes basic routing with Route, Link, and Redirect classes!
 
-* Now includes "Wedux" with `createStore` and `combineReducers`.
+* Now includes "Wedux" with `createStore` and `combineReducers`. Basic Weact integration is provided in the form of a `configureConnect` function that uses closure (rather than a Provider and the React context API, which is not yet part of Weact) to create a connect function that will create a connected Higher Order Component with access to Wedux state and dispatch.
 
 ## Acknowledgements
 
