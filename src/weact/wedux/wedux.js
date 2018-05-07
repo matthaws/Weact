@@ -1,13 +1,19 @@
 export const createStore = reducer => {
   let state = reducer();
+  const subscriptions = [];
 
   const store = {
     dispatch: action => {
       state = reducer(state, action);
+      subscriptions.forEach(sub => sub(state));
       return action;
     },
     getState: () => {
       return state;
+    },
+
+    subscribe: subscriptionFunc => {
+      subscriptions.push(subscriptionFunc);
     }
   };
 

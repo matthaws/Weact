@@ -5,10 +5,17 @@ export const configureConnect = store => (
   mapDispatchToProps
 ) => Component => ownProps => {
   const { state, dispatch } = store;
-  const mappedState = mapStateToProps ? mapStateToProps(state, ownProps) : {};
-  const mappedDispatch = mapDispatchToProps
-    ? mapDispatchToProps(dispatch, ownProps)
-    : {};
+  let mappedState;
+  let mappedDispatch;
+
+  const subscriptionFunc = state => {
+    mappedState = mapStateToProps ? mapStateToProps(state, ownProps) : {};
+    mappedDispatch = mapDispatchToProps
+      ? mapDispatchToProps(dispatch, ownProps)
+      : {};
+  };
+
+  store.subscribe(subscriptionFunc);
 
   const combinedProps = Object.assign(
     {},
